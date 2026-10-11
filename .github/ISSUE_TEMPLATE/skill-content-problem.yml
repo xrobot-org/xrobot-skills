@@ -1,0 +1,44 @@
+---
+name: Skill content problem
+description: Report a wrong, outdated or missing statement in the xrobot or xrobot-contrib skill
+labels:
+  - skill-content
+---
+
+body:
+  - type: dropdown
+    id: skill
+    attributes:
+      label: Skill
+      description: Which skill contains the problem?
+      options:
+        - xrobot
+        - xrobot-contrib
+    validations:
+      required: true
+  - type: input
+    id: location
+    attributes:
+      label: File and section heading
+      description: The file and section heading concerned, for example "references/troubleshooting.md, section Serial console silent".
+    validations:
+      required: true
+  - type: textarea
+    id: stated
+    attributes:
+      label: What the skill says
+      description: Quote the original text of the skill.
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: What actually happens
+      description: The actual behavior, with the complete command output, the output of xrobot --version and libxr --version, and the platform.
+    validations:
+      required: true
+  - type: textarea
+    id: suggestion
+    attributes:
+      label: Suggested fix
+      description: Optional. What the text should say instead.

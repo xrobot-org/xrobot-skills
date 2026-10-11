@@ -1,0 +1,30 @@
+{
+  "name": "xrobot-skills",
+  "owner": {
+    "name": "xrobot-org"
+  },
+  "metadata": {
+    "description": "Agent skills for the XRobot / LibXR ecosystem: end-user workflows and contributor workflows",
+    "version": "1.0.1"
+  },
+  "plugins": [
+    {
+      "name": "xrobot",
+      "description": "End-user skill for building robots with XRobot and LibXR: environment setup, project creation, code generation, module management, build and flash, LibXR usage, troubleshooting",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/xrobot"
+      ]
+    },
+    {
+      "name": "xrobot-contrib",
+      "description": "Contributor skill for XRobot, LibXR, drivers, CodeGenerator, the VS Code extension, modules, BSPs and website docs: branch and release process, interface and driver conventions, code and docs style, testing and acceptance",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/xrobot-contrib"
+      ]
+    }
+  ]
+}
