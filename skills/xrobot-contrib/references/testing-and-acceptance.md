@@ -1,19 +1,40 @@
-When to read this: Plan and execute verification for a LibXR, XRobot, module or BSP change — evidence levels, host tests, CI, on-board acceptance, USB/CAN debugging, and experiment reporting.
+When to read this: Plan and execute verification for a LibXR, XRobot, module or BSP change — the evidence ladder, formal verification, host tests, CI, on-board acceptance, USB/CAN debugging, and experiment reporting.
 
 ## Verification budget
 
-Start verification from the smallest check that can refute the current claim, and expand the scope only as the actual risk grows. For a change that touches public behavior — return codes and capacities, data visibility and ordering, partial acceptance, blocking and timeouts, completion and callback semantics, ownership and lifetime, cancellation, call contexts, ABI or layout, hardware side effects, Flash/RAM — review the semantic difference first, and run the full test matrix after that gate: an unreviewed matrix run produces numbers with no decision attached. Compiling proves that the toolchain accepts the change into the build for that backend and option set; runtime, semantic, and hardware claims need their own levels of evidence (see the table below). Do not repeat an accepted run whose sources, harness, environment, and acceptance criteria are unchanged. Stop at the declared budget; produce extra hashes, archives, inventories, or absence checks only for a concrete consumer.
+Start verification from the smallest check that can refute the current claim, and expand the scope only as the actual risk grows. For a change that touches public behavior — return codes and capacities, data visibility and ordering, partial acceptance, blocking and timeouts, completion and callback semantics, ownership and lifetime, cancellation, call contexts, ABI or layout, hardware side effects, Flash/RAM — review the semantic difference first, and run the full test matrix after that gate: an unreviewed matrix run produces numbers with no decision attached. Compiling proves that the toolchain accepts the change into the build for that backend and option set; runtime, semantic, and hardware claims need their own levels of evidence (see the evidence ladder below). Do not repeat an accepted run whose sources, harness, environment, and acceptance criteria are unchanged. Stop at the declared budget; produce extra hashes, archives, inventories, or absence checks only for a concrete consumer.
 
 ## Evidence levels
 
-| Level | What it proves | What it leaves open |
-| --- | --- | --- |
-| Compile pass | The toolchain accepts the change into the build for that backend and option set. | Runtime behavior of any kind: requirements, public semantics, MMIO and DMA behavior, timing, hardware. |
-| Host tests (`test/automatic`) | Deterministic core semantics on Linux: containers and queues, read/write ports, middleware, utilities, and the assertion-mode matrix. | Real cross-toolchain builds, USB enumeration and traffic, DMA/cache timing, IRQ and RTOS interleaving on the target, physical line behavior. |
-| On-board functional test | The real SDK/toolchain build runs on target hardware, and the touched peripheral paths work there (UART, SPI, I2C, CAN, USB). | Statistical timing claims, stability margins, sustained-throughput behavior. |
-| Long-run stress test | Repeatability under sustained load: bounded rounds with counters and error statistics surface low-probability interleavings and slow drift. | Generalization beyond the recorded configuration — results are evidence for the recorded board, wiring, host, and build identity. |
+| Level | Evidence | What it proves | What it leaves open |
+| --- | --- | --- | --- |
+| 1 | Static inspection or compile pass | The code reads consistently against the contract, and the toolchain accepts the change into the build for that backend and option set. | Runtime behavior of any kind: requirements, public semantics, MMIO and DMA behavior, timing, hardware. |
+| 2 | Deterministic regression of known examples (host tests, `test/automatic`) | Deterministic core semantics on Linux: containers and queues, read/write ports, middleware, utilities, and the assertion-mode matrix. | Real cross-toolchain builds, USB enumeration and traffic, DMA/cache timing, IRQ and RTOS interleaving on the target, physical line behavior. |
+| 3 | Sanitizer, stress, or repeated dynamic execution on the host | Memory errors, data races, undefined behavior, and low-probability interleavings on the paths the run exercises. | Interleavings the host scheduler does not produce, target timing, paths the run does not reach. |
+| 4 | Independent abstract model checking with negative controls | Safety and liveness of the abstract protocol under the stated assumptions; the broken configurations produce their expected counterexamples. | Whether the code implements the model; everything the model excludes (see "Formal verification and model checking"). |
+| 5 | Implementation-level memory-model or bounded verification | The concrete code's ordering and bounded-state behavior under the checker's memory model and bounds. | Behavior past the bounds, backend code outside the checked source, hardware. |
+| 6 | Real backend or toolchain build with the touched path included | The target's SDK and toolchain compile and link the touched path. | Runtime behavior on the target. |
+| 7 | Hardware acceptance on the product path | On-board functional test: the real build runs on target hardware, and the touched peripheral paths work there (UART, SPI, I2C, CAN, USB). Long-run stress rounds add repeatability under sustained load: counters and error statistics surface low-probability interleavings and slow drift. | Statistical timing claims and stability margins beyond the recorded rounds; generalization beyond the recorded board, wiring, host, and build identity. |
+| 8 | Release or deployment acceptance in the intended environment | The published artifact (package, image, firmware release, deployed site) works where its users run it. | Other environments and configurations. |
 
-Cite the highest completed level in a conclusion, and keep each statement at its own level: software and build gates cover their own layer, while DMA/cache coherency, IRQ timing, USB enumeration, and RTOS interleaving on the target are hardware-level claims backed by hardware-level evidence.
+Keep a conclusion within the strongest completed level and cite that level; a statement at one level is no proof at a higher one. A build pass is not hardware validation, and a model check is not proof of backend MMIO or DMA behavior. Software and build gates cover their own layer, while DMA/cache coherency, IRQ timing, USB enumeration, and RTOS interleaving on the target are hardware-level claims backed by level 7 evidence.
+
+## Test coverage
+
+- Cover normal behavior plus the timeout, partial-completion, reentry, teardown, wraparound, and error paths that apply to the change.
+- Treat driver, DMA, ISR, concurrency, ABI and layout, persistence, and performance changes as high-risk surfaces; each carries explicit evidence at the level its claim needs.
+- Report what the tests leave untested.
+
+## Formal verification and model checking
+
+Levels 4 and 5 follow these rules:
+
+- Write the specification independently from the implementation's guards.
+- Map each action and linearization point of the model back to concrete code.
+- Include intentionally broken configurations and require their expected counterexamples; a model that cannot fail proves nothing.
+- Separate safety, liveness, fairness assumptions, platform contracts, and implementation correspondence, and state each at its own level.
+- Turn every confirmed counterexample into a deterministic implementation test (level 2).
+- State what the model excludes, especially MMIO, DMA, interrupt masking, cache, backend scheduling, and user callbacks.
 
 ## Host tests
 
@@ -109,7 +130,7 @@ Build-only platforms: the MSPM0, HPM, CH32, and Linux BSPs run their own build-o
 
 ## On-board acceptance
 
-Before flashing, back up the whole flash and record the backup's SHA256. After the tests, write the backup back and read it back to confirm byte-identical content. Track which board each backup came from (chip UID) so a backup is restored to the board it came from, and record the final state in the report: which firmware runs on the board, and where the backup lives. Run Debug and Release builds. Support timing-related conclusions with bounded stress rounds, for example a fixed list of configuration switches with counted outcomes per round; hardware timing and error-path tests are their own evidence level, so add them when the claim concerns those areas.
+Before flashing, back up the whole flash and record the backup's SHA256. After the tests, write the backup back and read it back to confirm byte-identical content. Track which board each backup came from (chip UID) so a backup is restored to the board it came from, and record the final state in the report: which firmware runs on the board, and where the backup lives. Run Debug and Release builds. Support timing-related conclusions with bounded stress rounds, for example a fixed list of configuration switches with counted outcomes per round; hardware timing and error-path tests are level 7 evidence, so add them when the claim concerns those areas.
 
 For a board whose BSP is unknown, the first step is to read the IDCODE and the unique ID through the debug probe and to match the chip to a BSP; flashing starts after that match.
 

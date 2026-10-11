@@ -152,7 +152,9 @@ CI (`.github/workflows/check.yml`) gates each PR with: a build matrix (Debug-ON,
 - Doxygen comments live in headers; definitions in `.cpp` files keep at most local `//` comments and do not restate header text.
 - Record observable semantics and boundaries: preconditions, ownership, lifetime, execution context, reentry, completion, failure, platform limits.
 - Local `//` comments cover non-obvious invariants, state transitions, memory-ordering reasoning, hardware timing constraints, and compatibility constraints. Skip syntax restatement, narration of obvious assignments, experiment history, and vague abstractions in place of behavior.
-- Every `@param` names a parameter that exists in the declaration; unused named parameters carry `[[maybe_unused]]`.
+- Every `@param` names a parameter that exists in the declaration; unused named parameters carry `[[maybe_unused]]`. A documented parameter that has no name gets one when its file is next changed.
+- Comments explain the concrete meaning behind terms such as `bind`, `dispatch`, `lower`, `semantic`, or `family` when another maintainer could not infer the runtime or compile-time action from the word.
+- Doxyfile settings: implementation headers included inside a class or namespace body (for example `src/core/print/writer/*.hpp`) are listed in `EXCLUDE` and are not documented as public API; `PROJECT_NUMBER` stays unset; `PROJECT_BRIEF` is a neutral description; `EXTRACT_PRIVATE = NO`; `README.md` is the main page (`USE_MDFILE_AS_MAINPAGE = ./README.md`).
 - A virtual hook with a default implementation documents the caller contract: which return codes the caller handles and which it may ignore.
 - Suppressions (`NOLINT`, `clang-format off/on`) go at the narrowest proven location, with an explanation when the constraint is not evident.
 
@@ -177,3 +179,24 @@ Style rules: [doc style](https://xrobot.work/docs/con_guide/con-guide-doc-style)
 6. Keep command sequences runnable in the written order, keep prose consistent with the shown code, and mark elisions as excerpts.
 7. Hold terminology identical across source, comments, tests, and documentation.
 8. Use generic scenarios for core-library examples, and keep verification history and review debates out of user-facing docs.
+
+Further rules for technical documentation and API comments:
+
+9. Tie each technical claim to an implementation entry point, a test, build output, or platform configuration. Keep current behavior and design rationale apart; proposals live in the Roadmap issue and stay out of the page.
+10. State the platform scope of a page. Behavior of Linux, FreeRTOS, bare-metal, Webots, or one MCU backend is documented as that platform's behavior, and a universal core contract is stated only where every backend honors it.
+11. For an API or a runtime model, cover call context, ownership, lifetime, state transitions, concurrency, completion, errors, data layout, and resource cost.
+12. Tutorial and how-to examples build as written; pseudocode is labeled as pseudocode.
+13. Published documentation can lag the code. Confirm an API or a command against the checked-out revision, and record that revision when the accuracy of a statement depends on it.
+
+## Explaining complex architecture
+
+Large concurrency, lifecycle, and architecture topics are presented in bounded parts. Each part follows this order:
+
+1. Define the vocabulary, the state, and each owner or execution context.
+2. Walk one concrete trace before generalizing.
+3. State the invariants and the rejected behaviors.
+4. Quantify the fixed and the variable cost where performance matters.
+5. Map each claim to source, tests, models, builds, or hardware evidence.
+6. End with the proof limits and name the part that follows.
+
+Keep callback recursion, API admission, service ownership, hardware ownership, and operation completion as separate notions, even when they share one call stack.

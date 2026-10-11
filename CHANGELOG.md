@@ -7,6 +7,7 @@ as a set, and the tag of this repository tracks that set.
 
 ## Unreleased
 
+- `xrobot-contrib`: testing-and-acceptance.md carries one eight-level evidence ladder (static inspection through release acceptance) plus test-coverage and formal-verification rules; workflow.md gains the debug workflow, tool and script organization, environment cleanup, reusable-material and task-closing rules; branches-and-releases.md gains the GitHub state-change preflight and verification list and the delivery-state chain; coding-conventions.md gains Doxyfile settings, documentation scope rules and the bounded-parts order for explaining complex architecture.
 - Both skills: the Help and feedback sections route skill-content problems to the xrobot-skills repository, name the community page at xrobot.work/qq, and carry a `version` field in the SKILL.md frontmatter for manually copied installs.
 - `xrobot`: troubleshooting.md opens with a symptom index table mapping each entry by user-visible keywords; the Still unresolved section lists the same skill-repository routing.
 - `xrobot`: env-setup.md gains a Windows section (pipx, native vendor toolchains, `sysconfig_cli.bat`, POSIX-shell examples); modules.md states the trust obligation for module sources behind a Source.

@@ -15,6 +15,30 @@ When to read this: Read this file before opening a pull request, when a pull req
 - Cross-repository issues live in the XRobot-Dev-Roadmap repository; a concern specific to the library stays in the libxr repository's own issues. Roadmap issue titles start with a component prefix such as `[LibXR]`, `[XRobot]`, `[CodeGenerator]`, or `[Modules]`.
 - Org members can see which release an issue belongs to in the organization Project's `Release` field; if the board is not visible to you, ask the maintainer in the issue.
 
+## Changing GitHub state
+
+Each GitHub action is its own change: a comment, a pull request description edit, a label, a review submission, a retarget, a merge, a branch deletion, a release, a deployment. Recovery from a stale record is in references/common-mistakes.md, section "GitHub state has changed".
+
+- Preflight: read the live state immediately before the change — base and head refs with their SHAs, pull request state (open, draft, mergeable), the required checks on the current head, reviews and unresolved threads, labels, the changed-path list, and whether the branch still exists. A record from earlier in the session does not stand in for that read.
+- Draft first: when the request leaves the exact form of the change open, draft the change (text, labels, target refs) and show it before applying it.
+- Scope: apply the change through an exact allowlist of refs, files, labels, or fields, and leave unrelated existing content as it is.
+- Verification after the change: re-read the remote object and check the SHA, the status, the base, the labels or fields, and the side effects — issue auto-close from `Closes`, source-branch deletion, check reruns after a retarget. A mismatch is reported as a finding.
+
+## Delivery states
+
+A delivery report names each state on its own line:
+
+- local code changed;
+- committed;
+- pushed;
+- pull request opened, updated, or merged;
+- checks on the merge commit green;
+- package or image published;
+- deployment complete;
+- hardware or product acceptance passed.
+
+A downstream state that is still pending keeps that state open: a merged pull request whose merge-commit checks are running reads "merged, checks pending".
+
 ## Versions and tags
 
 - LibXR, XRobot (PyPI `xrobot`), and LibXR_CppCodeGenerator (PyPI `libxr`) carry independent version numbers and release together. A coordinated release bumps the last digit on each line, for example LibXR 2.0.2 / xrobot 1.0.2 / CodeGenerator 6.0.2. The VS Code extension follows the same flow on its own 2.0.x line.

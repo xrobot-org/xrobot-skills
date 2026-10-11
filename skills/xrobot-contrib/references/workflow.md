@@ -71,11 +71,54 @@ A check that goes green because a shared layer was bent to admit it did not pass
 
 ## Testing and acceptance
 
-Verification follows references/testing-and-acceptance.md: evidence levels, host tests, CI, on-board acceptance, and experiment reporting. These rules govern every claim:
+Verification follows references/testing-and-acceptance.md: the eight-level evidence ladder, formal verification, host tests, CI, on-board acceptance, and experiment reporting. These rules govern every claim:
 
 - Accept only evidence from the required path: on-board acceptance from an on-board run, backend proof from the backend, evidence built from the current code.
 - Verify scenarios separately. Preview, recording, replay, rendering, and on-board runs are each their own scenario; a pass in one is evidence for that one, unless the person making the request explicitly links the scenarios.
 - Before asking anyone for another physical action — a button press, a rewire, a power cycle — first obtain a way to observe the result (attaching a debugger without reset, reading registers, NMI or fault frames, capturing a log) and use it. Observation precedes repetition.
+
+## Debug workflow
+
+1. Reproduce the failure on the actual product path.
+2. Capture the first divergent status, byte, register, frame, state transition, or log line.
+3. State one falsifiable hypothesis and the smallest test that can reject it.
+4. Run a same-input A/B comparison with one material variable changed.
+5. Edit only after the divergence is localized.
+6. Re-run the product acceptance path: a probe or a synthetic harness serves the diagnosis and never becomes the final proof.
+
+Retries follow the verification budget: each one changes a material condition or brings new evidence.
+
+## Tools and scripts
+
+- Reuse repository-owned entry points before creating new tooling. Stable project-specific tools live in the repository's established `tools/` or `scripts/` directory.
+- One-off probes and staged commands live in the task's run directory when one exists, otherwise in an OS temporary directory. Source trees and user startup locations stay free of them.
+- A reusable script replaces a long inline shell chain when the logic may recur, changes system state, or needs checking.
+- A reusable script opens with a header: purpose, usage, inputs, outputs and artifacts, prerequisites, side effects, idempotency, and examples.
+- A script that deletes or overwrites defaults to a dry run and applies changes only on an explicit flag such as `--apply` or `--delete`.
+- Long runs use strict error handling, explicit exit codes, bounded retries, and a machine-readable summary.
+- Credentials, tokens, Wi-Fi material, private keys, and other secrets stay out of scripts, logs, manifests, and records.
+
+## Environment cleanup
+
+- Resolve every recursive move or delete target and confirm it sits inside the intended run, build, or workspace root before cleaning.
+- Remove only task-owned temporary files, processes, ports, mounts, scheduled jobs, and devices; other people's changes and unrelated dirty worktrees stay intact.
+- Stop the helpers the task started and confirm their processes and listeners are gone.
+- Restore modified runtime configuration, device state, environment variables, and temporary routing, unless the retained state is an explicit deliverable.
+- Keep rollback material until the new path passes acceptance; the last known-good artifact stays.
+- End with `git status --short --branch`, the relevant process and port checks, and a list of the artifacts kept on purpose.
+
+## Reusable material
+
+- Promote repeated command logic into a repository-owned tool when the task's scope allowlist includes it; otherwise report it as a follow-up.
+- Stable project rules enter repository documentation when the task's scope covers that change.
+- Retain fixtures, reproducers, inputs, outputs, and environment metadata for a named future consumer only. Each retained run carries a concise human-readable summary and, when useful, a machine-readable manifest: artifact path, hash, baseline, scenario, result.
+- Deduplicate before promoting: one maintained source replaces copied variants. Record the failure boundaries and the untested surfaces.
+
+## Closing a task
+
+- The acceptance path passed on the intended execution plane, and the checks the declared verification budget requires are recorded; a full build, a format run, a regression suite, and a hardware matrix are included when the budget names them.
+- Task-owned background state and temporary files are cleaned or kept on purpose, and out-of-scope candidates are reported without being fixed.
+- The delivery report states each delivery state separately (references/branches-and-releases.md, section "Delivery states").
 
 ## Review
 

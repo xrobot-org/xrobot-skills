@@ -44,7 +44,10 @@ Work runs through five stages — design discussion, implementation, verificatio
 | Race conditions, ISR/thread handoff, or `FULL`/`EMPTY` behavior | references/coding-conventions.md, section "Interrupt and thread rules" |
 | Changing a public interface or core behavior | references/public-interface-checklist.md |
 | Writing code, drivers, or style fixes | references/coding-conventions.md |
-| Testing and acceptance evidence | references/testing-and-acceptance.md |
+| Testing and acceptance evidence, the evidence ladder, model checking | references/testing-and-acceptance.md, sections "Evidence levels", "Formal verification and model checking" |
+| Debugging a failure, organizing tools and scripts, cleaning up the environment | references/workflow.md, sections "Debug workflow", "Tools and scripts", "Environment cleanup" |
+| Reporting delivery status, changing GitHub state | references/branches-and-releases.md, sections "Changing GitHub state", "Delivery states" |
+| Explaining a complex architecture, writing API comments, Doxygen settings, or technical documentation | references/coding-conventions.md, sections "Comments and Doxygen", "Documentation", "Explaining complex architecture" |
 | Writing a Module | references/module-development.md |
 | Writing or changing a BSP | references/bsp-development.md |
 | Changing the CodeGenerator | references/codegen-development.md |
@@ -58,11 +61,11 @@ Work runs through five stages — design discussion, implementation, verificatio
 | File | Purpose |
 | --- | --- |
 | repo-map.md | What each repository owns and where a given change belongs. |
-| workflow.md | Stage gates, work tiers, task contracts, ablation checks, reset rules, and handoff. |
-| branches-and-releases.md | Branch model, PR conventions, CI context rules, and the coordinated release procedure. |
+| workflow.md | Stage gates, work tiers, task contracts, ablation checks, reset rules, the debug workflow, tool and script organization, environment cleanup, and handoff. |
+| branches-and-releases.md | Branch model, PR conventions, GitHub state changes, delivery states, CI context rules, and the coordinated release procedure. |
 | public-interface-checklist.md | Baseline-versus-changed behavior comparison for public API and core semantics. |
-| coding-conventions.md | C++, CMake, and Python style plus formatting and repository hygiene. |
-| testing-and-acceptance.md | Test entry points per repository and what counts as acceptance evidence. |
+| coding-conventions.md | C++, CMake, and Python style, formatting, Doxygen and documentation rules, and the order for explaining complex architecture. |
+| testing-and-acceptance.md | The eight-level evidence ladder, formal verification, test entry points per repository, and what counts as acceptance evidence. |
 | module-development.md | Module manifest, constructor interface, README, and module CI. |
 | bsp-development.md | BSP layout, generated-file boundaries, tool pins, and BSP CI. |
 | codegen-development.md | CodeGenerator architecture, platform additions, and test suite. |

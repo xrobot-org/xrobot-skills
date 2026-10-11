@@ -30,7 +30,7 @@ Handling: the reset itself is `references/workflow.md`, Reset rules — what is 
 
 Symptom: the tracked state is stale — a PR was merged or closed, a branch was deleted, checks or reviews are outdated — and the next action is planned from the old record.
 
-Handling: refresh the live state before acting: base and head refs with SHAs, PR status (open, draft, mergeable), checks, reviews, and branch existence. Stale records — old review comments, old screenshots — do not constitute evidence of the current state. Treat each GitHub action as a separate change: editing a PR description is a different action from merging, merging is a different action from releasing, and deleting one branch authorizes nothing about other refs. After a change, re-read the remote object and verify the SHA, the status, and the side effects, such as issue auto-close or source-branch deletion.
+Handling: refresh the live state before acting: base and head refs with SHAs, PR status (open, draft, mergeable), checks, reviews, and branch existence. Stale records — old review comments, old screenshots — do not constitute evidence of the current state. Treat each GitHub action as a separate change: editing a PR description is a different action from merging, merging is a different action from releasing, and deleting one branch authorizes nothing about other refs. After a change, re-read the remote object and verify the SHA, the status, and the side effects, such as issue auto-close or source-branch deletion. The preflight and verification lists are in references/branches-and-releases.md, section "Changing GitHub state".
 
 ## Clearing other people's changes
 

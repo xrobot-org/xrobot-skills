@@ -37,6 +37,7 @@ The normative style guide is the [documentation style](https://xrobot.work/docs/
 - Bilingual layout: Chinese paragraphs first, English paragraphs after, each language flowing on its own; no sentence-by-sentence mechanical pairing; the content stays identical in both languages.
 - Command output comes from real runs, with machine-specific paths replaced by `<BSP>` or relative paths; code blocks carry a language; when a command and its output appear together, the command line starts with `$ `.
 - Mark excerpts with `// ...`, and show the source of every concept used in the text (for example, where a registration name comes from).
+- State the platform scope of a technical page, tie claims to source, tests, or build output, and make tutorial examples build as written; the full list is in references/coding-conventions.md, section "Documentation". A long concurrency, lifecycle, or architecture topic follows the bounded-parts order of the section "Explaining complex architecture" in the same file.
 
 ## Local build
 
@@ -54,6 +55,7 @@ Because `onBrokenLinks` throws, the build doubles as a link check: a broken inte
 - Both sides updated: `docs/` (Chinese) and `i18n/en/docusaurus-plugin-content-docs/current/` (English) carry the same change, Chinese paragraphs first, English paragraphs after, no mechanical pairing.
 - Register and terminology match the doc-style page: neutral third person, fixed vocabulary, identity negations removed, actual behavior described.
 - Scope: the page documents one project only; other projects are linked to their own documentation.
+- Platform scope: a technical page names the platform its behavior belongs to, and tutorial examples build as written.
 - Commands and outputs: from real runs, with generic paths, labeled code blocks, and `$ ` prefixes where output follows.
 - Version references match the current release set (LibXR 2.0.1 / xrobot 1.0.1 / CodeGenerator 6.0.1 / extension 2.0.1) unless the page documents history explicitly.
 - `npm run build` passes from the repository root.
