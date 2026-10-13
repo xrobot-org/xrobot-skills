@@ -1,7 +1,7 @@
 ---
 name: xrobot-contrib
 version: 1.0.1
-description: Contribute changes to the XRobot/LibXR ecosystem across its public repositories: route each change to the repository that owns it, follow the dev-branch, pull request and release conventions, and apply the coding, Module, BSP, CodeGenerator, extension and documentation practices of each repository. Use when the user prepares or reviews a pull request, asks about branches, releases or Roadmap issues, writes drivers, Modules or BSPs, edits the CodeGenerator, the XRobot CLI or the VS Code extension, or updates website documentation. Trigger phrases (Chinese): 分支 / PR / 发版 / 贡献 / 模块开发 / BSP / 代码风格 / CodeGenerator / VS Code 扩展 / 网站文档 / 新平台驱动
+description: "Contribute changes to the XRobot/LibXR ecosystem across its public repositories: route each change to the repository that owns it, follow the dev-branch, pull request and release conventions, and apply the coding, Module, BSP, CodeGenerator, extension and documentation practices of each repository. Use when the user prepares or reviews a pull request, asks about branches, releases or Roadmap issues, writes drivers, Modules or BSPs, edits the CodeGenerator, the XRobot CLI or the VS Code extension, or updates website documentation. Trigger phrases (Chinese): 分支 / PR / 发版 / 贡献 / 模块开发 / BSP / 代码风格 / CodeGenerator / VS Code 扩展 / 网站文档 / 新平台驱动"
 ---
 
 # Contributing to the XRobot/LibXR ecosystem

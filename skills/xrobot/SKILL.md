@@ -1,7 +1,7 @@
 ---
 name: xrobot
 version: 1.0.1
-description: Work on robot firmware with the XRobot/LibXR ecosystem: set up the environment, create or migrate projects, generate code with the libxr and xrobot CLIs, manage Modules and instances, build, flash, and debug, use the LibXR C++ framework and its data structures, and diagnose errors. Covers STM32 (CubeMX), TI MSPM0 (SysConfig), HPMicro HPM (Pinmux Tool), WCH CH32, ESP32 (ESP-IDF), and Linux host programs. Trigger phrases (Chinese): 搭环境 / 建工程 / 生成代码 / 模块 / 编译烧录 / 报错 / 选数据结构
+description: "Work on robot firmware with the XRobot/LibXR ecosystem: set up the environment, create or migrate projects, generate code with the libxr and xrobot CLIs, manage Modules and instances, build, flash, and debug, use the LibXR C++ framework and its data structures, and diagnose errors. Covers STM32 (CubeMX), TI MSPM0 (SysConfig), HPMicro HPM (Pinmux Tool), WCH CH32, ESP32 (ESP-IDF), and Linux host programs. Trigger phrases (Chinese): 搭环境 / 建工程 / 生成代码 / 模块 / 编译烧录 / 报错 / 选数据结构"
 ---
 
 # Working with XRobot and LibXR

@@ -13,6 +13,7 @@ as a set, and the tag of this repository tracks that set.
 - `xrobot`: env-setup.md gains a Windows section (pipx, native vendor toolchains, `sysconfig_cli.bat`, POSIX-shell examples); modules.md states the trust obligation for module sources behind a Source.
 - `xrobot-contrib`: repo-map.md covers this repository; codegen-development.md and tools-and-extension.md replace line-number citations with file-and-symbol citations.
 - Repository: CONTRIBUTING.md, a skill-content issue template with a community contact link, and `scripts/check_consistency.py` (marketplace.json / CHANGELOG / SKILL.md frontmatter version agreement) plus a GitHub Actions workflow running it together with `check_private.py`; a root `.gitattributes` (`* text=auto`) keeps LF line endings across platforms.
+- Both skills: the frontmatter `description` is a double-quoted YAML string. Unquoted, its `: ` sequences are a YAML syntax error for strict parsers (Antigravity rejected both skills with "mapping values are not allowed in this context"); the text is unchanged.
 
 ## 1.0.1 - 2026-10-11
 
