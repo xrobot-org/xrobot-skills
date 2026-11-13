@@ -16,6 +16,22 @@ LICENSE                      Apache-2.0
 
 `xrobot new-module` scaffolds the same layout and leaves the license to the author.
 
+## Module names and file/class names
+
+A Module uses one canonical PascalCase identifier for its local directory, primary header
+and public class. The identifier keeps the spelling used by the device or protocol,
+including uppercase acronyms and model numbers. The primary header's global class has the
+same name as the header stem; the Module parser uses that declaration when it reads the
+constructor. For example, an MS5837 Module uses `Modules/MS5837/MS5837.hpp` and
+`class MS5837`, while `ms5837` remains suitable for a Topic name, a RamFS command or a
+default instance id.
+
+Package requests still use the canonical `owner/Repo` identity from the module index, and
+BSP checkouts follow `Modules/<owner>/<Repo>/`. After a rename, `xrobot module show
+<header>` verifies that the manifest and matching public constructor are parsed. A
+lowercase compatibility wrapper is not added solely to accommodate a lowercase header
+name. The general C++ type rule is the `PascalCase` rule in `coding-conventions.md`.
+
 ## The CMakeLists.txt
 
 A module integrates through the `xr` target that the XRobot tooling wires into the build. BlinkLED's complete `CMakeLists.txt` (13 lines):
